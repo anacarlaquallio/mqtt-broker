@@ -3,6 +3,8 @@
 
 Este repositório trata-se da implementação do broker MQTT (EP1 da disciplina de Programação para Redes de computadores).
 
+![alt text](image.png)
+
 ## Requisitos e execução
 ### Requisitos
 Para executar o projeto, você deve ter as seguintes ferramentas instaladas:
