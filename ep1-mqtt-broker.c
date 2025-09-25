@@ -1,3 +1,7 @@
+/* Broker MQTT Simplificado v5 - Versão final
+ * EP1 Redes - Usando socketpair()
+ */
+
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,7 +22,7 @@
 
 #define LISTENQ 10
 #define MAXLINE 4096
-#define MAX_CLIENTS 100
+#define MAX_CLIENTS 2000
 
 // --- Estruturas de Dados ---
 
@@ -63,7 +67,6 @@ int parent_comm_fd = -1;
 int client_conn_fd = -1;
 
 // --- Funções Auxiliares MQTT ---
-
 uint32_t decode_remaining_length(unsigned char *buffer, int *bytes_used)
 {
     uint32_t multiplier = 1;
@@ -148,8 +151,7 @@ void sigchld_handler(int sig)
         ;
 }
 
-// --- Funções de Comunicação no processo filho ---
-
+// --- Funções de comunicação no processo filho ---
 void send_client_id_to_parent(const char *client_id)
 {
     parent_child_msg_t msg;
@@ -186,8 +188,7 @@ void send_disconnect_to_parent(void)
     write(parent_comm_fd, &msg, sizeof(msg));
 }
 
-// --- Handlers de Pacotes MQTT no processo filho ---
-
+// --- Handlers de pacotes MQTT no processo filho ---
 int handle_connect_child(int connfd, unsigned char *packet, uint32_t length)
 {
     (void)length;
@@ -421,7 +422,6 @@ void process_client_child(int connfd, int comm_fd)
 }
 
 // --- Lógica do processo pai ---
-
 bool is_subscribed(const client_info_t *client, const char *topic)
 {
     for (int i = 0; i < client->topic_count; i++)
